@@ -62,8 +62,7 @@ Fine Tuning BERT model on the 20 Newsgroups dataset for text classification
 
 The 20 Newsgroups dataset shows moderate class balance:
 - Most categories have 500-600 training samples
-- Some variation in class sizes (imbalance ratio ~1.5x)
-- Weighted metrics used to account for class imbalance
+- Some variation in class sizes (imbalance ratio ~1.9x)
 
 ---
 
