@@ -152,10 +152,3 @@ The optimized model with learning rate scheduler and weight decay demonstrates b
 
 ## Requirements
 See `requirements.txt` for all dependencies
-
-## Author
-Aarya Upadhya 
-Anshull M Udyavar
-
-## Date
-February 2026
