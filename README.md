@@ -51,20 +51,20 @@ Fine Tuning BERT model on the 20 Newsgroups dataset for text classification
 - Training Accuracy: 84%
 - Test Accuracy: ~71%
 
-![Confusion Matrix - Epoch 3 with Scheduler & Weight Decay](./images/epoch_3_with_scheduler_decay.png)
+![Confusion Matrix - Epoch 3 with Scheduler & Weight Decay](./SLM_20_Newsgroups\images\Epoch_3_weight_decay\Confusion_with_weight_decay.png)
 
 ### Epoch 4 without Scheduler + No Weight Decay
 - Average Loss: 0.88
 - Training Accuracy: 80%
 - Test Accuracy: ~70%
 
-![Confusion Matrix - Epoch 4 without Scheduler & Weight Decay](./images/epoch_4_no_scheduler.png)
+![Confusion Matrix - Epoch 4 without Scheduler & Weight Decay](./SLM_20_Newsgroups\images\Epoch_4_images\confusion_matrix.png)
 
 ---
 
 ## Class Distribution
 
-![Class Distribution - Training Set](./class_distribution.png)
+![Class Distribution - Training Set](./SLM_20_Newsgroups\images\class_distribution.png)
 
 The 20 Newsgroups dataset shows moderate class balance:
 - Most categories have 500-600 training samples
