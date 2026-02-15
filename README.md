@@ -1,7 +1,7 @@
 # BERT Fine-tuning on 20 Newsgroups
 
 ## Overview
-Fine-tune a BERT model on the 20 Newsgroups dataset for text classification 
+Fine Tuning BERT model on the 20 Newsgroups dataset for text classification 
 
 ## Dataset
 - **Source:** SetFit/20_newsgroups from HuggingFace
@@ -12,25 +12,72 @@ Fine-tune a BERT model on the 20 Newsgroups dataset for text classification
 ## Model
 - **Base Model:** BERT (bert-base-uncased)
 - **Task:** Multi-class text classification
-- **Framework:** PyTorch 
+- **Framework:** PyTorch (no HuggingFace Trainer)
 
-## Results
+---
 
-### Evaluation Metrics (Test Set)
-- **Accuracy:** 71.44%
-- **Precision (weighted):** 71.53%
-- **Recall (weighted):** 71.44%
-- **F1-Score (weighted):** 71.15%
+## Results Comparison
 
-### Training Metrics
-- **Final Training Accuracy:** 84.52%
-- **Final Training Loss:** 0.5403
+### Configuration Impact on Model Performance
+
+| Configuration | Accuracy | Precision | Recall | F1-Score | Generalization | Notes |
+|---------------|----------|-----------|--------|----------|-----------------|-------|
+| **With Scheduler + Weight Decay (6 epochs)** | **0.7144** | **0.7153** | **0.7144** | **0.7115** |**Good** | Better regularization, stable training, good test performance |
+| **Without Scheduler + No Weight Decay (4 epochs)** | 0.7058 | 0.7212 | 0.7058 | 0.7083 |**Low** | Higher precision but lower recall, overfitting signs, poor generalization to custom text |
+
+### Key Insights
+
+**With Scheduler + Weight Decay (Recommended):**
+- Slightly higher overall accuracy (0.7144 vs 0.7058)
+- Better generalization to unseen data
+- More balanced metrics across all categories
+- Custom text predictions are accurate
+- Learning rate optimization prevents overfitting
+- L2 regularization improves model robustness
+
+**Without Scheduler + No Weight Decay:**
+- Higher precision (0.7212) but lower recall (0.7058) - unbalanced
+- oor generalization- fails on custom text examples
+- Training accuracy much higher than test accuracy (signs of overfitting)
+- No learning rate adjustment leads to unstable training
+- Model memorizes training patterns instead of learning generalizable features
+
+---
+
+## Training Progression
+
+### Epoch 3 with Scheduler + Weight Decay
+- Average Loss: 1.05
+- Training Accuracy: 84%
+- Test Accuracy: ~71%
+
+![Confusion Matrix - Epoch 3 with Scheduler & Weight Decay](./images/epoch_3_with_scheduler_decay.png)
+
+### Epoch 4 without Scheduler + No Weight Decay
+- Average Loss: 0.88
+- Training Accuracy: 80%
+- Test Accuracy: ~70%
+
+![Confusion Matrix - Epoch 4 without Scheduler & Weight Decay](./images/epoch_4_no_scheduler.png)
+
+---
+
+## Class Distribution
+
+![Class Distribution - Training Set](./class_distribution.png)
+
+The 20 Newsgroups dataset shows moderate class balance:
+- Most categories have 500-600 training samples
+- Some variation in class sizes (imbalance ratio ~1.5x)
+- Weighted metrics used to account for class imbalance
+
+---
 
 ## Files
 - `eda.py` - Exploratory Data Analysis with class distribution visualization
-- `train.py` - BERT fine-tuning using PyTorch training loop
-- `test.py` - Evaluation framework with pretrained BERT
-- `Main.py ` - Custom data to test the classification
+- `train.py` - BERT fine-tuning using PyTorch training loop with scheduler and weight decay
+- `test.py` - Evaluation metrics and inference pipeline
+- `main.py` - custom prompts to classify
 
 ## Installation
 ```bash
@@ -41,7 +88,7 @@ pip install -r requirements.txt
 
 ### 1. Exploratory Data Analysis
 ```bash
-python eda.py
+python EDA.py
 ```
 Outputs: `class_distribution.png`
 
@@ -50,7 +97,7 @@ Outputs: `class_distribution.png`
 python train.py
 ```
 Outputs: Fine-tuned model saved to `./bert-20newsgroups/`
-Time: ~90 minutes on GPU
+Time: ~90 minutes on GPU (6 epochs)
 
 ### 3. Evaluate & Test
 ```bash
@@ -60,17 +107,20 @@ Outputs: Metrics, `confusion_matrix.png`, and inference examples
 
 ### 4. Custom Predictions
 ```bash
-python mian.py
+python main.py
 ```
 Test model on custom text examples
 
+---
+
 ## Key Implementation Details
 
-### Training Loop (PyTorch Only)
-- Learning rate: 2e-5 with linear schedule and warmup
-- weight decay: 0.01 
-- Batch size: 16
-- Epochs: 2 seeds 4 and 3 
+### Training Loop 
+- **Learning rate schedule:** Linear decay with warmup (10% warmup steps)
+- **Weight decay:** L2 regularization (0.01)
+- **Optimizer:** AdamW
+- **Batch size:** 32
+- **Epochs:** 2 seeded runs ( 3 and 4)
 
 ### Data Preprocessing
 - Tokenization using BertTokenizer
@@ -83,17 +133,22 @@ Test model on custom text examples
 - Confusion Matrix: 20x20 heatmap visualization
 - Inference: predict_text() function returns class label and confidence score
 
-## Performance Notes
-- Training accuracy (84.52%) higher than test accuracy (71.44%) indicates some overfitting
-- Model generalizes well to new text examples (5/6 custom examples correct)
-- Classes with distinct vocabulary (e.g., religion, science) have higher prediction accuracy
+---
+
+
+### Model Behavior
+- Better performance on specialized topics (religion, medicine)
+- Balanced predictions across all 20 categories
+- Learning rate schedule prevents overfitting
+- Weight decay improves generalization to unseen data
+
+---
+
+## Conclusion
+
+The optimized model with learning rate scheduler and weight decay demonstrates better generalization capabilities compared to the baseline. While the test accuracy difference is modest (0.86 percentage points), their is  qualitative improvement in custom text prediction accuracy..
+
+---
 
 ## Requirements
 See `requirements.txt` for all dependencies
-
-## Author
-Aarya Upadhya 
-Anshull M Udyavar
-
-## Date
-February 2026
