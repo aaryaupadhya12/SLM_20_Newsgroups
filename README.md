@@ -31,6 +31,7 @@ Fine Tuning BERT model on the 20 Newsgroups dataset for text classification
 - Better generalization to unseen data
 - More balanced metrics across all categories
 - Custom text predictions are accurate
+  
 **Without Scheduler + No Weight Decay:**
 - Higher precision (0.7212) but lower recall (0.7058) - unbalanced
 - poor generalization- fails on custom text examples
