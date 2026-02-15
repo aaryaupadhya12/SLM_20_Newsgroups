@@ -79,6 +79,10 @@ pip install -r requirements.txt
 
 ## Usage
 
+### Easy Run: (Run this for Easy non modular run)
+```bash
+    slm-20-newsgroupts.ipynb
+```
 ### 1. Exploratory Data Analysis
 ```bash
 python EDA.py
