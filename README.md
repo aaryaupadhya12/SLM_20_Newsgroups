@@ -90,10 +90,3 @@ Test model on custom text examples
 
 ## Requirements
 See `requirements.txt` for all dependencies
-
-## Author
-Aarya Upadhya 
-Anshull M Udyavar
-
-## Date
-February 2026
