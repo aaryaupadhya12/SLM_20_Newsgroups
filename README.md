@@ -31,15 +31,9 @@ Fine Tuning BERT model on the 20 Newsgroups dataset for text classification
 - Better generalization to unseen data
 - More balanced metrics across all categories
 - Custom text predictions are accurate
-- Learning rate optimization prevents overfitting
-- L2 regularization improves model robustness
-
 **Without Scheduler + No Weight Decay:**
 - Higher precision (0.7212) but lower recall (0.7058) - unbalanced
-- oor generalization- fails on custom text examples
-- Training accuracy much higher than test accuracy (signs of overfitting)
-- No learning rate adjustment leads to unstable training
-- Model memorizes training patterns instead of learning generalizable features
+- poor generalization- fails on custom text examples
 
 ---
 
@@ -132,13 +126,6 @@ Test model on custom text examples
 - Inference: predict_text() function returns class label and confidence score
 
 ---
-
-
-### Model Behavior
-- Better performance on specialized topics (religion, medicine)
-- Balanced predictions across all 20 categories
-- Learning rate schedule prevents overfitting
-- Weight decay improves generalization to unseen data
 
 ---
 
