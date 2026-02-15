@@ -1,80 +1,90 @@
-from transformers import BertForSequenceClassification, BertTokenizer
-from transformers import AutoTokenizer
 import torch
-from torch.utils.data import DataLoader, TensorDataset
-from transformers import BertForSequenceClassification, BertTokenizer
+from torch.optim import AdamW
+from torch.nn import CrossEntropyLoss
+from transformers import get_linear_schedule_with_warmup, BertForSequenceClassification, BertTokenizer
 from datasets import load_dataset
+from torch.utils.data import DataLoader, TensorDataset
+from tqdm import tqdm
 import numpy as np
-
-model = BertForSequenceClassification.from_pretrained("bert-base-uncased", num_labels=20)
-tokenizer = BertTokenizer.from_pretrained("bert-base-uncased")
-
-# To apply the preprocessing fnction to tokenize the text and truncate sequence only till maximum input length
-def preprocess_function(examples):
-    return tokenizer(examples["text"], truncation=True , max_length = 512 , padding = True)
-
-tokenized_20NG = ds.map(preprocess_function,batched = True)
-
-train_encodings = tokenized_20NG['train']
-test_encodings = tokenized_20NG['test']
-
-print(train_encodings)
-print(test_encodings)
-
-train_labels = torch.tensor(dataset['train']['label'])
-test_labels = torch.tensor(dataset['test']['label'])
-
-print(train_labels)
-print(test_labels)
-
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+from sklearn.metrics import accuracy_score
 
 
-# The map function outputs as a Dataset object to need to convert into Pytorch tensor (Rember)
-train_input_ids = torch.tensor(train_encodings['input_ids'])
-train_attention_mask = torch.tensor(train_encodings['attention_mask'])
+optimizer = AdamW(model.parameters(), lr=2e-5, weight_decay=0.01)
+loss_function = CrossEntropyLoss()
 
-train_dataset = TensorDataset(
-    train_input_ids,
-    train_attention_mask,
-    train_labels
+total_steps = len(train_loader) * 3  # 3 epochs
+scheduler = get_linear_schedule_with_warmup(
+    optimizer,
+    num_warmup_steps=int(0.1 * total_steps),
+    num_training_steps=total_steps
 )
+print(f"Total training steps: {total_steps}")
+print(f"Warmup steps: {int(0.1 * total_steps)}\n")
 
-train_loader = DataLoader(train_dataset, batch_size=64, shuffle=True)
+epochs = 3
 
-optimizer = torch.optim.AdamW(model.parameters(), lr=2e-5)
-loss_function = torch.nn.CrossEntropyLoss()
 
-epochs = 4
-for epoch in range(epochs):  
+for epoch in range(epochs):
     model.train()
     total_loss = 0
+    all_predictions = []
+    all_true_labels = []
     
-    for batch_idx, (input_ids, attention_mask, labels) in enumerate(train_loader):
+    # Use tqdm for progress bar
+    progress_bar = tqdm(
+        enumerate(train_loader),
+        total=len(train_loader),
+        desc=f"Epoch {epoch+1}/{epochs}",
+        leave=True
+    )
+    
+    for batch_idx, (input_ids, attention_mask, labels) in progress_bar:
         input_ids = input_ids.to(device)
         attention_mask = attention_mask.to(device)
         labels = labels.to(device)
         
+        # Forward pass
         outputs = model(
             input_ids=input_ids,
             attention_mask=attention_mask
         )
         logits = outputs.logits
         
+        # Calculate loss
         loss = loss_function(logits, labels)
         
+        # Backward pass
         optimizer.zero_grad()
         loss.backward()
         optimizer.step()
+        scheduler.step()
         
+        # Track loss and predictions
         total_loss += loss.item()
         
+        # Get predictions for accuracy calculation
+        predictions = torch.argmax(logits, dim=1)
+        all_predictions.extend(predictions.cpu().numpy())
+        all_true_labels.extend(labels.cpu().numpy())
+        
+        # Update progress bar with loss
+        progress_bar.set_postfix({'loss': loss.item()})
+        
         if (batch_idx + 1) % 100 == 0:
-            print(f"Epoch {epoch+1}/{epochs}, Batch {batch_idx+1}/{len(train_loader)}, Loss: {loss.item():.4f}")
+            current_acc = accuracy_score(all_true_labels, all_predictions)
+            print(f"\n  Batch {batch_idx+1}/{len(train_loader)}")
+            print(f"  Loss: {loss.item():.4f}")
+            print(f"  Accuracy so far: {current_acc:.4f}")
     
+    # Calculate epoch metrics
     average_loss = total_loss / len(train_loader)
-    print(f"Epoch {epoch+1}/{epochs} completed. Average Loss: {average_loss:.4f}\n")
+    epoch_accuracy = accuracy_score(all_true_labels, all_predictions)
+    
+    print(f"EPOCH {epoch+1}/{epochs} COMPLETED")
+    print(f"Average Loss:     {average_loss:.4f}")
+    print(f"Epoch Accuracy:   {epoch_accuracy:.4f} ({epoch_accuracy*100:.2f}%)")
 
-
+# Save model and tokenizer
+print("Saving model and tokenizer...")
 model.save_pretrained("./bert-20newsgroups")
 tokenizer.save_pretrained("./bert-20newsgroups")

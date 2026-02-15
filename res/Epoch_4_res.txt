@@ -1,0 +1,75 @@
+Average_loss_training
+
+Epoch 1/4, Batch 100/708, Loss: 2.3498
+Epoch 1/4, Batch 200/708, Loss: 1.2637
+Epoch 1/4, Batch 300/708, Loss: 1.5601
+Epoch 1/4, Batch 400/708, Loss: 1.1676
+Epoch 1/4, Batch 500/708, Loss: 0.9069
+Epoch 1/4, Batch 600/708, Loss: 1.0955
+Epoch 1/4, Batch 700/708, Loss: 1.2373
+Epoch 1/4 completed. Average Loss: 1.5011
+
+Epoch 2/4, Batch 100/708, Loss: 0.7556
+Epoch 2/4, Batch 200/708, Loss: 0.9954
+Epoch 2/4, Batch 300/708, Loss: 1.0393
+Epoch 2/4, Batch 400/708, Loss: 1.1963
+Epoch 2/4, Batch 500/708, Loss: 1.1271
+Epoch 2/4, Batch 600/708, Loss: 0.7241
+Epoch 2/4, Batch 700/708, Loss: 0.9376
+Epoch 2/4 completed. Average Loss: 0.7398
+
+Epoch 3/4, Batch 100/708, Loss: 0.3405
+Epoch 3/4, Batch 200/708, Loss: 0.8032
+Epoch 3/4, Batch 300/708, Loss: 0.4771
+Epoch 3/4, Batch 400/708, Loss: 0.3140
+Epoch 3/4, Batch 500/708, Loss: 0.3542
+Epoch 3/4, Batch 600/708, Loss: 0.0906
+Epoch 3/4, Batch 700/708, Loss: 0.4676
+Epoch 3/4 completed. Average Loss: 0.4802
+
+Epoch 4/4, Batch 100/708, Loss: 0.3941
+Epoch 4/4, Batch 200/708, Loss: 0.3427
+Epoch 4/4, Batch 300/708, Loss: 0.1162
+Epoch 4/4, Batch 400/708, Loss: 0.3404
+Epoch 4/4, Batch 500/708, Loss: 0.3549
+Epoch 4/4, Batch 600/708, Loss: 0.2201
+Epoch 4/4, Batch 700/708, Loss: 0.3806
+Epoch 4/4 completed. Average Loss: 0.3086
+
+
+Accuracy (weighted):  0.7058
+Precision (weighted): 0.7212
+Recall (weighted):    0.7058
+F1-Score (weighted):  0.7083
+
+# Evaluation Text 
+
+Example 1:
+  Text: 'I love playing basketball and football!'
+  Predicted: rec.motorcycles
+  Confidence: 36.89%
+
+Example 2:
+  Text: 'This new graphics card is amazing for gaming'
+  Predicted: rec.sport.baseball
+  Confidence: 51.09%
+
+Example 3:
+  Text: 'Jesus Christ is my savior and I believe in God'
+  Predicted: comp.sys.mac.hardware
+  Confidence: 91.44%
+
+Example 4:
+  Text: 'The stock market crashed today, all investors lost money'
+  Predicted: talk.politics.misc
+  Confidence: 43.67%
+
+Example 5:
+  Text: 'Python is the best programming language for machine learning'
+  Predicted: misc.forsale
+  Confidence: 52.53%
+
+Example 6:
+  Text: 'Medical Vaccines of COVID-19 has started Circulation'
+  Predicted: talk.politics.mideast
+  Confidence: 32.14%
