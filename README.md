@@ -12,7 +12,6 @@ Fine Tuning BERT model on the 20 Newsgroups dataset for text classification
 ## Model
 - **Base Model:** BERT (bert-base-uncased)
 - **Task:** Multi-class text classification
-- **Framework:** PyTorch (no HuggingFace Trainer)
 
 ---
 
@@ -22,7 +21,7 @@ Fine Tuning BERT model on the 20 Newsgroups dataset for text classification
 
 | Configuration | Accuracy | Precision | Recall | F1-Score | Generalization | Notes |
 |---------------|----------|-----------|--------|----------|-----------------|-------|
-| **With Scheduler + Weight Decay (6 epochs)** | **0.7144** | **0.7153** | **0.7144** | **0.7115** |**Good** | Better regularization, stable training, good test performance |
+| **With Scheduler + Weight Decay (3 epochs)** | **0.7144** | **0.7153** | **0.7144** | **0.7115** |**Good** | Better regularization, stable training, good test performance |
 | **Without Scheduler + No Weight Decay (4 epochs)** | 0.7058 | 0.7212 | 0.7058 | 0.7083 |**Low** | Higher precision but lower recall, overfitting signs, poor generalization to custom text |
 
 ### Key Insights
