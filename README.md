@@ -97,7 +97,6 @@ Outputs: `class_distribution.png`
 python train.py
 ```
 Outputs: Fine-tuned model saved to `./bert-20newsgroups/`
-Time: ~90 minutes on GPU (6 epochs)
 
 ### 3. Evaluate & Test
 ```bash
