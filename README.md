@@ -118,7 +118,7 @@ Test model on custom text examples
 - **Learning rate schedule:** Linear decay with warmup (10% warmup steps)
 - **Weight decay:** L2 regularization (0.01)
 - **Optimizer:** AdamW
-- **Batch size:** 32
+- **Batch size:** 16
 - **Epochs:** 2 seeded runs ( 3 and 4)
 
 ### Data Preprocessing
@@ -146,8 +146,3 @@ Test model on custom text examples
 ## Conclusion
 
 The optimized model with learning rate scheduler and weight decay demonstrates better generalization capabilities compared to the baseline. While the test accuracy difference is modest (0.86 percentage points), their is  qualitative improvement in custom text prediction accuracy..
-
----
-
-## Requirements
-See `requirements.txt` for all dependencies
