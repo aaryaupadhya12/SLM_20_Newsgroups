@@ -81,7 +81,7 @@ pip install -r requirements.txt
 
 ### Easy Run: (Run this for Easy non modular run)
 ```bash
-    slm-20-newsgroupts.ipynb
+src/slm-20-newsgroups.ipynb
 ```
 ### 1. Exploratory Data Analysis
 ```bash
